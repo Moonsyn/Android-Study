@@ -32,19 +32,25 @@ public class Main2Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2_b);
 
-        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup viewGroup = null;
+        View childLayout1 = (View) inflater.inflate(R.layout.app_bar_main2, null);
+        View childLayout2 = (View) inflater.inflate(R.layout.nav_header_main2, null);
+
+        CoordinatorLayout coordinatorLayout = childLayout1.findViewById(R.id.app_bar);
+        //System.out.println(String.valueOf(findViewById(R.id.app_bar)));
 
         Toolbar toolbar = new Toolbar(this);
-        toolbar.setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, R.attr.actionBarSize));
+        toolbar.setLayoutParams(new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150));
         toolbar.setBackground(getDrawable(R.color.colorPrimary));
         toolbar.setPopupTheme(R.style.AppTheme_PopupOverlay);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = new FloatingActionButton(this);
         CoordinatorLayout.LayoutParams layoutParams = new CoordinatorLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.anchorGravity = Gravity.BOTTOM | GravityCompat.END;
+        layoutParams.gravity = Gravity.BOTTOM | Gravity.END;
         layoutParams.setMargins(16,16,16,16);
-        fab.setBackground(getDrawable(R.drawable.good));
+        fab.setImageDrawable(getDrawable(R.drawable.good));
         fab.setLayoutParams(layoutParams);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,13 +59,15 @@ public class Main2Activity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+        //System.out.println(String.valueOf(coordinatorLayout));
         coordinatorLayout.addView(toolbar);
         coordinatorLayout.addView(fab);
 
-        LinearLayout linearLayout = findViewById(R.id.nav_header_main2);
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 176);
+        LinearLayout linearLayout = childLayout2.findViewById(R.id.nav_header_main2);
+
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 476);
         linearLayout.setBackground(getDrawable(R.drawable.side_nav_bar));
-        linearLayoutParams.gravity = Gravity.BOTTOM;
+        linearLayoutParams.gravity = Gravity.BOTTOM | Gravity.START;
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setPadding(16,16,16,16);
         //setTheme(R.style.ThemeOverlay_AppCompat_Dark);
@@ -87,22 +95,22 @@ public class Main2Activity extends AppCompatActivity
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
 
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup viewGroup = null;
-        View childLayout1 = (View) inflater.inflate((XmlPullParser) coordinatorLayout.getResources(), null);
-        View childLayout2 = (View) inflater.inflate((XmlPullParser) linearLayout.getResources(), null);
-
-        drawerLayout.addView(childLayout1);
-        drawerLayout.addView(childLayout2);
-
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawerLayout.openDrawer(Gravity.END);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);*/
+        NavigationView navigationView = new NavigationView(this);
+        navigationView.setLayoutParams(new DrawerLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        navigationView.setFitsSystemWindows(false);
+        navigationView.addHeaderView(childLayout2);
+        navigationView.inflateMenu(R.menu.activity_main2_drawer);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        drawerLayout.addView(childLayout1);
+        //drawerLayout.addView(childLayout2);
+        //drawerLayout.addView(navigationView);
     }
 
     @Override
