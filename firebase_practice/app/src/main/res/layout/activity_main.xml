@@ -27,6 +27,31 @@
             android:orientation="vertical"
             android:layout_marginTop="180dp">
             <TextView
+                android:id="@+id/userName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                tools:text="User Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            <TextView
+                android:id="@+id/userEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="user@email.com" />
+            <TextView
+                android:id="@+id/userNickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                tools:text="User Nickname"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <TextView
+                android:id="@+id/userNickEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="user@email.com" />
+            <TextView
                 android:id="@+id/tvNewSpeed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

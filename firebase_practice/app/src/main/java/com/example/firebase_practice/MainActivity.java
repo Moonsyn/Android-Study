@@ -3,9 +3,11 @@ package com.example.firebase_practice;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -14,6 +16,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -26,17 +33,27 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+
+    private CollectionReference userColRef = db.collection("user");
+
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+
+    private static final String TAG = "MainAct";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -61,6 +78,38 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, TimelineActivity.class));
             }
         });
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        if(user.getDisplayName() != null){
+            TextView userName = navigationView.findViewById(R.id.userName);
+            userName.setText(user.getDisplayName());
+        }
+        if(user.getEmail() != null){
+            TextView userEmail = navigationView.findViewById(R.id.userEmail);
+            userEmail.setText(user.getEmail());
+        }
+
+        user = mAuth.getCurrentUser();
+
+        userColRef.document("userInfo").get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            Log.d(TAG, "DocumentSnapshot data : " + documentSnapshot.getData());
+                            TextView userNickname = findViewById(R.id.userNickname);
+                            TextView userNickEmail = findViewById(R.id.userNickEmail);
+                            userNickname.setText(documentSnapshot.get("Nickname").toString());
+                            userNickEmail.setText(documentSnapshot.get("userEmail").toString());
+                        }else{
+                            Log.d(TAG, "DocumentSnapshot data is empty");
+                        }
+                    }
+                });
+
+
     }
     @Override
     public void onBackPressed() {
