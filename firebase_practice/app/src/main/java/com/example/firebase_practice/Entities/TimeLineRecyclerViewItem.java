@@ -1,11 +1,11 @@
-package com.example.firebase_practice;
+package com.example.firebase_practice.Entities;
 
-public class NewSpeedRecyclerViewItem {
+public class TimeLineRecyclerViewItem {
 
     private String content;
     private String comment;
 
-    public NewSpeedRecyclerViewItem(String content, String comment) {
+    public TimeLineRecyclerViewItem(String content, String comment) {
         this.content = content;
         this.comment = comment;
     }

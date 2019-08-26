@@ -1,4 +1,4 @@
-package com.example.firebase_practice;
+package com.example.firebase_practice.Activity;
 
 import android.net.Uri;
 import android.os.Bundle;

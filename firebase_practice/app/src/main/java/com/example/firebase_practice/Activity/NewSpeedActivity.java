@@ -1,12 +1,15 @@
-package com.example.firebase_practice;
+package com.example.firebase_practice.Activity;
 
-import android.app.AppComponentFactory;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.firebase_practice.Adapter.NewSpeedRecyclerViewAdapter;
+import com.example.firebase_practice.Entities.NewSpeedRecyclerViewItem;
+import com.example.firebase_practice.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,7 +25,6 @@ import javax.annotation.Nullable;
 public class NewSpeedActivity extends AppCompatActivity {
 
     private RecyclerView newSpeedRecyclerView;
-    private NewSpeedRecyclerViewAdapter newSpeedRecyclerViewAdapter;
     private ArrayList<NewSpeedRecyclerViewItem> mList;
 
     private LinearLayoutManager mLinearLayoutManager;
@@ -38,7 +40,7 @@ public class NewSpeedActivity extends AppCompatActivity {
         super.onCreate(savedInstance);
         setContentView(R.layout.activity_newspeed);
 
-        newSpeedRecyclerView = findViewById(R.id.rvNewspeed);
+        newSpeedRecyclerView = findViewById(R.id.rvNewSpeed);
         mLinearLayoutManager = new LinearLayoutManager(this);
         newSpeedRecyclerView.setLayoutManager(mLinearLayoutManager);
         mList = new ArrayList<>();
@@ -46,24 +48,30 @@ public class NewSpeedActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         newSpeedColRef = db.collection("users")
-                .document(user.getDisplayName()).collection("NewSpeed");
+                .document("Seungyeon Moon").collection("NewSpeed");
 
-        for(int i=0;i<10;i++){
-            newSpeedColRef.document("num" + String.valueOf(i+1)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+        final NewSpeedRecyclerViewAdapter newSpeedRecyclerViewAdapter = new NewSpeedRecyclerViewAdapter(NewSpeedActivity.this, mList);
+
+        for(int i=1;i<4;i++){
+            newSpeedColRef.document("num" + String.valueOf(i)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException fe) {
                     try{
                         String content = documentSnapshot.get("content").toString();
                         String comment = documentSnapshot.get("comment").toString();
                         mList.add(new NewSpeedRecyclerViewItem(content, comment));
+                        Log.d("mList", String.valueOf(mList.size()));
+                        newSpeedRecyclerViewAdapter.notifyDataSetChanged();
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             });
         }
-        newSpeedRecyclerViewAdapter = new NewSpeedRecyclerViewAdapter(NewSpeedActivity.this, mList);
+
         newSpeedRecyclerView.setAdapter(newSpeedRecyclerViewAdapter);
+
 
     }
 }

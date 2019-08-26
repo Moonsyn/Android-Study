@@ -1,4 +1,4 @@
-package com.example.firebase_practice;
+package com.example.firebase_practice.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -97,30 +97,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d("LoginAct", "onActivityResult s " + requestCode);
 
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        /*
-        if (requestCode == RC_GOOGLE_SIGN_IN) {
 
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
-            Log.d("LoginAct", "onActivityResult 0 "+result.isSuccess());
-
-            if (result.isSuccess()) {
-                Log.d("LoginAct", "onActivityResult 1 "+result.getSignInAccount());
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            } else {
-                // Google Sign In failed, update UI appropriately
-                // ...
-                Log.d("LoginAct", "onActivityResult 2 "+result.getStatus());
-                Toast.makeText(LoginActivity.this, "Google Sign In failed.",
-                        Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        }
-        */
-        //Result returned from launching the Intent from GoogleSigninApi.getSignIntent(...);
+        //Result returned from launching the Intent from GoogleSignInApi.getSignIntent(...);
         if (requestCode == RC_GOOGLE_SIGN_IN){
             Log.d("LoginAct", "onActivityResult 0");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -133,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.w(TAG, "Google sign in failed", e);
                 dialog.dismiss();
             }
+        }else{
+            Log.w("Google signIn fail by ", "code " + requestCode);
         }
     }
 

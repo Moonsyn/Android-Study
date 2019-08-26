@@ -1,11 +1,10 @@
-package com.example.firebase_practice;
+package com.example.firebase_practice.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.firebase_practice.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.View;
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         timeline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, TimelineActivity.class));
+                startActivity(new Intent(MainActivity.this, TimeLineActivity.class));
             }
         });
 
